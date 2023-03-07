@@ -72,9 +72,9 @@ server <- function(input, output, session) {
   
   datasetInput <- reactive({
     switch(input$dataset,
-           "year" = year,
-           "model" = model,
-           "price" = price)
+           "Iris" = Iris,
+           "stockprice" = stockprice,
+           "usedcars" = usedcars)
   })
   
   output$summary <- renderPrint({
@@ -103,23 +103,22 @@ server <- function(input, output, session) {
     }
   })
   
-  datasetInput <- reactive({
+  datasetInput2 <- reactive({
     switch(input$dataset2,
            "Iris" = Iris,
            "stockprice" = stockprice,
            "usedcars" = usedcars)
   })
   output$table <- renderTable({
-    datasetInput()
+    datasetInput2()
   })
   output$downloadData <- downloadHandler(
     filename = function(){
       paste(input$dataset2, ".csv", sep = "")
     },
     content = function(file){
-      write.csv(datasetInput(), file, row.names = FALSE)
+      write.csv(datasetInput2(), file, row.names = FALSE)
     }
   )
 }
 shinyApp(ui = ui, server = server)
-shiny::runApp()
